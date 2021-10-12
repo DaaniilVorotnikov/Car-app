@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Car extends Model
+class CarModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'cars';
+    protected $table = 'car_models';
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['name', 'founded', 'description'];
-
-    public function carModels()
+    //A car model belongs to a car
+    public function car()
     {
-        return $this->hasMany(CarModel::class);
+        return $this->belongsTo(Car::class);
     }
 }
