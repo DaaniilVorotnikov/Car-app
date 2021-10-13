@@ -19,24 +19,55 @@
         <p class="text-lg text-gray-700 py-6">
             {{ $car->description }}
         </p>
-
-        <ul>
-            <p class="text-lg text-gray-700 py-3">
-                Modules:
-            </p>
-
+        <table class="table-auto">
+            <tr class="bg-blue-100">
+                <th class="w-1/4 border-4 border-gray-500">
+                    Model
+                </th>
+                <th class="w-1/4 border-4 border-gray-500">
+                    Engines
+                </th>
+                <th class="w-1/4 border-4 border-gray-500">
+                    Date
+                </th>
+            </tr>
             @forelse ($car->carModels as $model)
-               <li class="inline italic text-gray-600 px-1 py-6">
-                    {{ $model['model_name'] }}
-                </li> 
+                <tr>
+                    <td class="border-4 border-gray-500">
+                        {{ $model->model_name }}
+                    </td>
+
+                    <td class="border-4 border-gray-500">
+                       @foreach ($car->engines as $engine)
+                           @if($model->id == $engine->model_id)
+                                {{ $engine->engine_name }}
+                           @endif
+                       @endforeach 
+                    </td>
+
+                    <td class="border-4 border-gray-500">
+                        {{ date('d-m-Y', strtotime($car->productionDate->created_at))}} 
+                    </td>
+                </tr>
             @empty
                 <p>
-                    No models found
+                    No car models found!
                 </p>
             @endforelse
-        </ul>
+        </table>
+        <p class="text-left">
+            Product types:
+            @forelse ($car->products as $product)
+                {{ $product->name }}
+            @empty
+                <p>
+                    No car product description
+                </p>
+            @endforelse
+        </p>
 
-        <hr class="mt-4 mb-8 py-6">
+        <hr class="mt-4 mb-8">
+        
     </div>
 </div>
 </div>
