@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateValidationRequest;
 use Illuminate\Http\Request;
 
 use App\Models\Car;
+use App\Models\Product;
+use App\Rules\Uppercase;
 
 class CarsController extends Controller
 {
@@ -48,11 +51,50 @@ class CarsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        // Methods we can use on $request
+        //quessExtension()
+        //getMineType()
+        //store()
+        //asStore()
+        //storePublicly()
+        //move()
+        //getClientOriginalName()
+        //getClientMimeType()
+        //guessClientExtension()
+        //getSize()
+        //getError()
+        //isValid()
+
+        $test = $request->file('image')->guessExtension();
+
+        //dd($test);
+
+        $request->validate([
+            'name' => 'required',
+            'founded' => 'required|integer|min:0|max:2021',
+            'description' => 'required',
+            'image' => 'required|mimes:jpg, png, jpeg|max:5048'
+        ]);
+
+        $newImageName = time() . '-' . $request->name . '.' .
+        $request->image->extension();
+
+        $request->image->move(public_path('images'), $newImageName);
+
+       
+        //dd($request->all());
+
+        //$request->validated();
+
+        //If it's valid, it will proceed
+        //If it's not valid, throw a ValidationException
+    
         $car = Car::create([
             'name' => $request->input('name'),
             'founded' => $request->input('founded'),
-            'description' => $request->input('description')
+            'description' => $request->input('description'),
+            'image_path' => $newImageName
         ]);
         // $car = new Car;
         // $car->name = $request->input('name');
@@ -72,7 +114,9 @@ class CarsController extends Controller
     public function show($id)
     {
         $car = Car::find($id);
-        
+        // $products = Product::find();
+        $product = Product::find($id);
+        print_r($product);
        // dd($car->products);
        // var_dump($car->productionDate);
     
@@ -99,8 +143,10 @@ class CarsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateValidationRequest $request, $id)
     {
+        $request->validated();
+
         $car = Car::where('id', $id)
             ->update([
                 'name' => $request->input('name'),
