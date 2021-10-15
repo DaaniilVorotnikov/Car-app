@@ -20,7 +20,7 @@
         <header class="bg-blue-900 py-6">
             <div class="container mx-auto flex justify-between items-center px-6">
                 <div>
-                    <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-100 no-underline">
+                    <a href="{{ url('/cars') }}" class="text-lg font-semibold text-gray-100 no-underline">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                     @else
                         <span>{{ Auth::user()->name }}</span>
 
-                        <a href="{{ route('logout') }}"
+                        <a href="{{ ('logout') }}"
                            class="no-underline hover:underline"
                            onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>

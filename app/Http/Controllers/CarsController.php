@@ -16,6 +16,12 @@ class CarsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' =>['index', 'show']]);
+    }
+
     public function index()
     {
         $cars = Car::all();
@@ -94,7 +100,8 @@ class CarsController extends Controller
             'name' => $request->input('name'),
             'founded' => $request->input('founded'),
             'description' => $request->input('description'),
-            'image_path' => $newImageName
+            'image_path' => $newImageName,
+            'user_id' => auth()->user()->id
         ]);
         // $car = new Car;
         // $car->name = $request->input('name');
